@@ -345,7 +345,7 @@ function editPage(){
     //TODO replace the edit button with cancel button
 
     //TODO add more edit functions
-    // console.log("Editing the page").
+    
     editAboutMe()
     editEducation()
     editWorkExperience()
