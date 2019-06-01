@@ -36,6 +36,8 @@ $(document).ready(function() {
     });
 });
 
+
+
 // Function to view the introduction
 function viewIntroduction(introductionJSON){
     // Add the profile picture
@@ -345,11 +347,10 @@ function editPage(){
     //TODO replace the edit button with cancel button
 
     //TODO add more edit functions
-    
+
     editAboutMe()
     editEducation()
     editWorkExperience()
-
 
 }
 
@@ -357,16 +358,67 @@ function editAboutMe() {
 
 }
 
+function addEducation(educationNumber, courseField, dateOfGraduation,degreeType,school)
+{
+  var addEdu =   `<div id = "extra-education-${educationNumber}">
+      <br>
+      <div id = "education-${educationNumber}">
+        <h6 class="heading mb-4 text-center text-primary">Education ${educationNumber}</h6>
+          <div class="pl-lg-4">
+            <div class="row">
+
+                <div class="col-lg-6" >
+                   <div class = "form-group">
+                      <label class ="form-control-label">Course Field</label>
+                        <br>
+                      <input type = "textarea" class="form-control form-control-alternative extra-education-${educationNumber}" placeholder="Field of Study" value = "${courseField}" >
+                   </div>
+                </div>
+
+                <div class="col-lg-6" >
+                    <div class = "form-group">
+                      <label class = "form-control-label">School/University</label>
+                        <br>
+                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="School or University" value = "${school}" >
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class = "form-group">
+                      <label class = "form-control-label">Degree Type</label>
+                        <br>
+                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="Type of Degree" value = "${degreeType}" >
+                    </div>
+                </div>
+
+                <div class="col-lg-6">
+                    <div class = "form-group">
+                      <label class = "form-control-label">Date of Graduation</label>
+                        <br>
+                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="Graduation Date" value = "${dateOfGraduation}" >
+                    </div>
+                </div>
+
+              </div>
+            </div>
+        </div>
+      </div>`;
+
+        return addEdu;
+
+}
+
+
 function editEducation() {
 
 
-    educationJSON = profileJSOn.education;
+    educationJSON =  profileJSOn.education;
   // getting the total number of education
   var totalNumberOfEducation = Object.keys(educationJSON).length;
   // Template string which will store the html of all the education
-  var eduHtml = ``;
+  var eduHtml =  ``;
 
-
+  eduHtml = `${eduHtml} <div id = "education-container">`;
   // for each education, add the education to the string
   $.each(educationJSON, function(i, education){
 
@@ -374,74 +426,59 @@ function editEducation() {
     var dateOfGraduation = education.dateOfGraduation;
     var degreeType = education.degreeType;
     var school = education.school;
+    $("#education-fields").empty()
 
     var educationNumber = i.replace("education", ""); //gets the education number from the database using the educationJSON.
 
-      eduHtml = `${eduHtml}
-                    <div id = "extra-education-${educationNumber}">
-                    <br>
-                    <div id = "education-${educationNumber}">
-                      <h6 class="heading mb-4 text-center text-primary">Education ${educationNumber}</h6>
-                    <div class="row">
-                      <div class="col-lg-12">
-                          <div class="row">
-                              <div class="col-lg-5">
-                                 <div class = "form-group">
-                                    <label class ="form-control-label">Course Field</label>
-                                      <br>
-                                    <input type = "textarea" class="form-control form-control-alternative extra-education-${educationNumber}" placeholder="courseField" value = "${courseField}" >
-                                 </div>
-
-                              </div>
-                              <div class="col-lg-5">
-                                  <div class = "form-group">
-                                    <label class = "form-control-label">School/University</label>
-                                      <br>
-                                    <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="school" value = "${school}" >
-                                  </div>
-                              </div>
-
-                              <div class="col-lg-5">
-                                  <div class = "form-group">
-                                    <label class = "form-control-label">Degree Type</label>
-                                      <br>
-                                    <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="degreeType" value = "${degreeType}" >
-                                  </div>
-                              </div>
-
-                              <div class="col-lg-5">
-                                  <div class = "form-group">
-                                    <label class = "form-control-label">Date of Graduation</label>
-                                      <br>
-                                    <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="dateOfGraduation" value = "${dateOfGraduation}" >
-                                  </div>
-                              </div>
-
-                            </div>
-                          </div>
-                      </div>
-                    </div>
-                    </div>`;
-
-
-
-       eduHtml = `${eduHtml} <div id="add-extra-work-experience-buttons">
-                  <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="addExtraWorkExperience()" >
-
-                    <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
-                  </button>
-
-                  <button class="btn btn-icon btn-2 btn-danger" type="button" id="remove-extra-work-experience" onclick="removeExtraWorkExperience()">
-                    <span class="btn-inner--icon"><i class="ni ni-fat-delete"></i></span>
-                  </button>
-                  </div>`;
+      eduHtml =   `${eduHtml}` + addEducation(educationNumber,courseField,dateOfGraduation,degreeType,school);
       // there's a line after every education to separate two sections, so we add it here
-      if(i != totalNumberOfEducation){
-          eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
-      }
+
   });
+
+ eduHtml =   `${eduHtml}</div>`
+
+
+  eduHtml = `${eduHtml} <div id="add-extra-work-experience-buttons">
+
+                          <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="addExtraEducation()" >
+                            <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
+                          </button>
+
+                          <button class="btn btn-icon btn-2 btn-danger" type="button" id="remove-extra-education" onclick="removeExtraEducation()">
+                            <span class="btn-inner--icon"><i class="ni ni-fat-delete"></i></span>
+                          </button>
+                        </div>`;
+
+//  if(i != totalNumberOfEducation){
+//      eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
+//  }
+
   // Appending the template literal string to the education section (*** .append() also works in the same way)
   $("#education-fields").html(eduHtml);
+}
+
+function addExtraEducation() {
+  var totalNumberOfEducation = $("#education-container").children().length +1//+ 1;
+  if(totalNumberOfEducation>0){
+      document.getElementById("remove-extra-education").removeAttribute("style");
+      document.getElementById("remove-extra-education").setAttribute("style", "display: inline-block;");
+  }
+  var addEduHtml = ``;
+  addEduHtml  = `${addEduHtml}`+ addEducation(totalNumberOfEducation,"","","","");
+  $("#education-container").append(addEduHtml);
+}
+
+function removeExtraEducation() {
+  var totalNumberOfEducation = $("#education-container").children().length    // get the last education children and remove.
+  var removeid = "#extra-education-" + totalNumberOfEducation;
+
+  $(removeid).remove();
+
+    if($("#education-container").children().length==0){
+        document.getElementById("remove-extra-education").removeAttribute("style");
+        document.getElementById("remove-extra-education").setAttribute("style", "display: none;");
+    }
+
 }
 
 function editWorkExperience() {
@@ -523,6 +560,7 @@ function editWorkExperience() {
 
     html = `${html}</div>`
 
+
     html = `${html}<div id="add-extra-work-experience-buttons">
                         <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="addExtraWorkExperience()" >
                             <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
@@ -582,8 +620,8 @@ function addExtraWorkExperience() {
                                     <div class="row">
                                     <div class="col-lg-12">
                                         <div class="form-group">
-                                        <label class="form-control-label\">Job Discription</label>
-                                        <textarea rows="8" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder="Discribe your work in few words ..."></textarea>
+                                        <label class="form-control-label\">Job Description</label>
+                                        <textarea rows="8" class="form-control form-control-alternative extra-work-experience-${workExperienceNumber}" placeholder="Describe your work in few words ..."></textarea>
                                         </div>
                                     </div>
                                     </div>
