@@ -379,7 +379,7 @@ function addEducation(educationNumber, courseField, dateOfGraduation,degreeType,
                     <div class = "form-group">
                       <label class = "form-control-label">School/University</label>
                         <br>
-                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="School or University" value = "${school}" >
+                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="School oUniversity" value = "${school}" >
                     </div>
                 </div>
 
@@ -413,13 +413,13 @@ function editEducation() {
 
 
     educationJSON =  profileJSOn.education;
-  // getting the total number of education
+  // getting the total number of education qualifications
   var totalNumberOfEducation = Object.keys(educationJSON).length;
-  // Template string which will store the html of all the education
+  // Template string which will store the html of all the education forms
   var eduHtml =  ``;
 
   eduHtml = `${eduHtml} <div id = "education-container">`;
-  // for each education, add the education to the string
+  // for each education qualification, add the education to the string
   $.each(educationJSON, function(i, education){
 
     var courseField = education.courseField;
