@@ -360,49 +360,65 @@ function editAboutMe() {
 
 function addEducation(educationNumber, courseField, dateOfGraduation,degreeType,school)
 {
-  var addEdu =   `<div id = "extra-education-${educationNumber}">
+  var addEdu =  
+     `<div id = "extra-education-${educationNumber}">
       <br>
       <div id = "education-${educationNumber}">
         <h6 class="heading mb-4 text-center text-primary">Education ${educationNumber}</h6>
           <div class="pl-lg-4">
-            <div class="row">
+            <div class="row">`
 
-                <div class="col-lg-6" >
-                   <div class = "form-group">
-                      <label class ="form-control-label">Course Field</label>
-                        <br>
-                      <input type = "textarea" class="form-control form-control-alternative extra-education-${educationNumber}" placeholder="Field of Study" value = "${courseField}" >
-                   </div>
-                </div>
+            addEdu = `${addEdu}
+            <div class="col-lg-6">
+                <div class="form-group">
+                    <label class="form-control-label">Specialization Field</label>                            
+                    <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">
+                    <option value=\"softwareEngineer\">Software Engineering</option>
+                    <option value=\"computerScience\">Computer Science</option>
+                    <option value=\"business\">Business</option>
+                    <option value=\"etc\">Etc</option> `
+    
+            addEdu = `${addEdu} </select>
+                        </div>
+                    </div>`
 
-                <div class="col-lg-6" >
+            addEdu =   `${addEdu} <div class="col-lg-6" >
                     <div class = "form-group">
                       <label class = "form-control-label">School/University</label>
                         <br>
-                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="School oUniversity" value = "${school}" >
+                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="School or University" value = "${school}" >
                     </div>
-                </div>
+                </div>`
 
+    
+            addEdu = `${addEdu}
                 <div class="col-lg-6">
-                    <div class = "form-group">
-                      <label class = "form-control-label">Degree Type</label>
-                        <br>
-                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="Type of Degree" value = "${degreeType}" >
+                        <div class="form-group">
+                        <label class="form-control-label">Degree</label>
+                        <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">
+                        <option value=\"diploma\">Diploma</option>
+                        <option value=\"bachelors\">Bachelors</option>
+                        <option value=\"master\">Masters</option>
+                        <option value=\"etc\">Etc</option> `
+
+                addEdu = `${addEdu} </select>
+                        </div>
+                    </div>`
+                        
+                addEdu = `${addEdu}      
+                        <div class="col-lg-6">
+                            <div class = "form-group">
+                              <label class = "form-control-label">Date of Graduation</label>
+                                <br>
+                              <input type = "date" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="Graduation Date" value = "${dateOfGraduation}" >
+                            </div>
+                        </div>
+        
+                      </div>
                     </div>
                 </div>
-
-                <div class="col-lg-6">
-                    <div class = "form-group">
-                      <label class = "form-control-label">Date of Graduation</label>
-                        <br>
-                      <input type = "textarea" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="Graduation Date" value = "${dateOfGraduation}" >
-                    </div>
-                </div>
-
-              </div>
-            </div>
-        </div>
-      </div>`;
+              </div>`;
+        
 
         return addEdu;
 
