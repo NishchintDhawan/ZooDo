@@ -65,6 +65,9 @@ function viewEducation(educationJSON){
 
     // for each education, add the education to the string
     $.each(educationJSON, function(i, education){
+
+        i= i.charAt(i.length-1);
+        
         eduHtml = `${eduHtml}<div class="row">
                     <div class="col-lg-12">
                         <div class="row">
@@ -80,6 +83,7 @@ function viewEducation(educationJSON){
                 </div>`;
         // there's a line after every education to separate two sections, so we add it here
         if(i != totalNumberOfEducation){
+           
             eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
         }
     });
@@ -100,8 +104,10 @@ function viewWorkExperience(workExperienceJSON){
         // for each work experience, add the it to the string
         $.each(workExperienceJSON, function(i, work){
 
-            var workDescription = work.description.replace(/\n/g, "</br>");
+            i= i.charAt(i.length-1);
 
+            var workDescription = work.description.replace(/\n/g, "</br>");
+            
             html = `${html}<div class="row">
                                 <div class="col-lg-12">
                                     <div class="row">
@@ -122,6 +128,7 @@ function viewWorkExperience(workExperienceJSON){
                             </div>`;
             // there's a line after every work experience to separate two sections, so we add it here
             if(i != totalNumberOfWorkExperience){
+                
                 html = `${html}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
             }
         });
