@@ -358,7 +358,6 @@ function editPage(){
     editAboutMe()
     editEducation()
     editWorkExperience()
-    editVideos()
 
 }
 
@@ -366,9 +365,47 @@ function editAboutMe() {
 
 }
 
-function addEducation(educationNumber, courseField, dateOfGraduation,degreeType,school)
+/*
+<option value=\"softwareEngineer\">Software Engineering</option>
+                    <option value=\"computerScience\">Computer Science</option>
+                    <option value=\"business\">Business</option>
+                    <option value=\"etc\">Etc</option> 
+*/
+
+function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,school)
 {
-  var addEdu =  
+    var selectedDegree  ;
+    var selectedCourse  ; 
+
+    var DegreeEnum = {
+        "Diploma": 0,
+        "Bachelors": 1,
+        "Masters": 2,
+        "Etc": 3
+    }
+
+    var CourseFieldEnum = {
+        "Software Engineering": 0,
+        "Computer Science": 1,
+        "Business": 2,
+        "Etc": 3
+    }
+
+    if( (courseField=="") && (degreeType=="")) {        // if a new form is added, then default values are the first values in the forms.
+        selectedDegree = 0 ;
+        selectedCourse = 0 ;
+    }
+   else{
+    selectedCourse = CourseFieldEnum[courseField];
+    selectedDegree = DegreeEnum[degreeType];
+    }
+    
+    console.log(selectedCourse);
+
+    (selectedCourse == 0 ) ? console.log("This should be correct") : console.log("This is wrong");
+    
+
+    var addEdu =  
      `<div id = "extra-education-${educationNumber}">
       <br>
       <div id = "education-${educationNumber}">
@@ -380,12 +417,13 @@ function addEducation(educationNumber, courseField, dateOfGraduation,degreeType,
             <div class="col-lg-6">
                 <div class="form-group">
                     <label class="form-control-label">Specialization Field</label>                            
-                    <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">
-                    <option value=\"softwareEngineer\">Software Engineering</option>
-                    <option value=\"computerScience\">Computer Science</option>
-                    <option value=\"business\">Business</option>
-                    <option value=\"etc\">Etc</option> `
-    
+                    <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">`
+            
+                    addEdu= (selectedCourse == 0) ? `${addEdu}<option value="Software Engineering" selected>Software Engineering</option>`:`${addEdu}<option value="Software Engineering">Software Engineering</option>`;
+                    addEdu= (selectedCourse == 1) ? `${addEdu}<option value="Computer Science" selected>Computer Science</option>`:`${addEdu}<option value="Computer Science">Computer Science</option>`;
+                    addEdu = (selectedCourse == 2) ? `${addEdu}<option value="Business" selected>Business</option>`:`${addEdu}<option value="Business">Business</option>`;
+                    addEdu = (selectedCourse == 3) ? `${addEdu}<option value="Etc" selected>Etc</option>`:`${addEdu}<option value="Etc">Etc</option>`;
+            
             addEdu = `${addEdu} </select>
                         </div>
                     </div>`
@@ -403,12 +441,12 @@ function addEducation(educationNumber, courseField, dateOfGraduation,degreeType,
                 <div class="col-lg-6">
                         <div class="form-group">
                         <label class="form-control-label">Degree</label>
-                        <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">
-                        <option value=\"diploma\">Diploma</option>
-                        <option value=\"bachelors\">Bachelors</option>
-                        <option value=\"master\">Masters</option>
-                        <option value=\"etc\">Etc</option> `
-
+                        <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">`
+                        addEdu= (selectedDegree == 0) ? `${addEdu}<option value="Diploma" selected>Diploma</option>`:`${addEdu}<option value="Diploma">Diploma</option>`;
+                        addEdu= (selectedDegree == 1) ? `${addEdu}<option value="Bachelors" selected>Bachelors</option>`:`${addEdu}<option value="Bachelors">Bachelors</option>`;
+                        addEdu = (selectedDegree == 2) ? `${addEdu}<option value="Masters" selected>Masters</option>`:`${addEdu}<option value="Masters">Masters</option>`;
+                        addEdu = (selectedDegree == 3) ? `${addEdu}<option value="Etc" selected>Etc</option>`:`${addEdu}<option value="Etc">Etc</option>`;
+                        
                 addEdu = `${addEdu} </select>
                         </div>
                     </div>`
@@ -441,6 +479,7 @@ function editEducation() {
   var totalNumberOfEducation = Object.keys(educationJSON).length;
   // Template string which will store the html of all the education forms
   var eduHtml =  ``;
+  
 
   eduHtml = `${eduHtml} <div id = "education-container">`;
   // for each education qualification, add the education to the string
@@ -450,11 +489,12 @@ function editEducation() {
     var dateOfGraduation = education.dateOfGraduation;
     var degreeType = education.degreeType;
     var school = education.school;
+    
     $("#education-fields").empty()
 
     var educationNumber = i.replace("education", ""); //gets the education number from the database using the educationJSON.
 
-      eduHtml =   `${eduHtml}` + addEducation(educationNumber,courseField,dateOfGraduation,degreeType,school);
+      eduHtml =   `${eduHtml}` + addEducation(educationNumber, courseField,dateOfGraduation,degreeType,school);
       // there's a line after every education to separate two sections, so we add it here
 
   });
@@ -535,7 +575,7 @@ function editWorkExperience() {
         var workDescription = work.description.replace("</br>", /\n/g);
         var workExperienceNumber = i.replace("workExperience", "");
         var selectedYear = years[work.years];
-
+        
         html = `${html} <div id="extra-work-experience-${workExperienceNumber}">
                             <br>
                             <div id="work-experience-${workExperienceNumber}">
@@ -678,60 +718,5 @@ function removeExtraWorkExperience() {
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
 
-    
-}
-
-
-
-function editVideos() {
-    
-    var videoJSON = profileJSOn.videos;
-    var totalNumberOfVideos = Object.keys(videoJSON).length;
-    $("#videos-section").empty();
-    addRemoveButton(videoJSON);
-    
-}
-
-function addRemoveButton(videoJSON){
-
-     var addRemoveHTML =``;
-     addRemoveHTML = `${addRemoveHTML} <div class="row ml-2"> `;
-     
-    $.each(videoJSON, function(videoKeyName, video){
-           var videoIndex = videoKeyName.substring(videoKeyName.length-1);
-            var videoSrc = video.url;
-        addRemoveHTML = `${addRemoveHTML}   <div  id = "videoName-${videoIndex}" class="card col-lg-3 border-primary" style="padding:10px;">
-
-                                            <video style="max-width:100%;" controls>
-                                                <source src="${videoSrc}">   
-                                            </video>
-                                            </div>
-
-                                            <div class="row">
-                                                    <div class="col-lg-1">
-                                                        <div id = "removeVideoButton-${videoIndex}" class = "removeVideoButton">
-                                                        <button class="btn btn-icon btn-2 btn-danger" type="button"  onclick="removeVideo(${videoIndex})">
-                                                        <span class="btn-inner--icon"><i class="ni ni-fat-delete"></i></span>
-                                                        </button>
-                                                        </div>
-                                                </div>
-                                            </div>
-                                            <div class="col-lg-1"></div>`;
-
-    });
-    addRemoveHTML = `${addRemoveHTML} </div> `
-    $("#videos-section").html(addRemoveHTML);
-    var AddButton = addVideosButton();
-}
-
-function removeVideo(videoNumber){
-    var removeVideoID = "#videoName-"+videoNumber;
-    var removeVideoButtonID = "#removeVideoButton-"+ videoNumber;
-    $(removeVideoID).remove();
-    $(removeVideoButtonID).remove();
-
-
-    //make other videos shift left. 
-    
     
 }
