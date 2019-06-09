@@ -358,6 +358,7 @@ function editPage(){
     editAboutMe()
     editEducation()
     editWorkExperience()
+    editVideos()
 
 }
 
@@ -676,4 +677,61 @@ function removeExtraWorkExperience() {
         document.getElementById("remove-extra-work-experience").removeAttribute("style");
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
+
+    
+}
+
+
+
+function editVideos() {
+    
+    var videoJSON = profileJSOn.videos;
+    var totalNumberOfVideos = Object.keys(videoJSON).length;
+    $("#videos-section").empty();
+    addRemoveButton(videoJSON);
+    
+}
+
+function addRemoveButton(videoJSON){
+
+     var addRemoveHTML =``;
+     addRemoveHTML = `${addRemoveHTML} <div class="row ml-2"> `;
+     
+    $.each(videoJSON, function(videoKeyName, video){
+           var videoIndex = videoKeyName.substring(videoKeyName.length-1);
+            var videoSrc = video.url;
+        addRemoveHTML = `${addRemoveHTML}   <div  id = "videoName-${videoIndex}" class="card col-lg-3 border-primary" style="padding:10px;">
+
+                                            <video style="max-width:100%;" controls>
+                                                <source src="${videoSrc}">   
+                                            </video>
+                                            </div>
+
+                                            <div class="row">
+                                                    <div class="col-lg-1">
+                                                        <div id = "removeVideoButton-${videoIndex}" class = "removeVideoButton">
+                                                        <button class="btn btn-icon btn-2 btn-danger" type="button"  onclick="removeVideo(${videoIndex})">
+                                                        <span class="btn-inner--icon"><i class="ni ni-fat-delete"></i></span>
+                                                        </button>
+                                                        </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-1"></div>`;
+
+    });
+    addRemoveHTML = `${addRemoveHTML} </div> `
+    $("#videos-section").html(addRemoveHTML);
+    var AddButton = addVideosButton();
+}
+
+function removeVideo(videoNumber){
+    var removeVideoID = "#videoName-"+videoNumber;
+    var removeVideoButtonID = "#removeVideoButton-"+ videoNumber;
+    $(removeVideoID).remove();
+    $(removeVideoButtonID).remove();
+
+
+    //make other videos shift left. 
+    
+    
 }
