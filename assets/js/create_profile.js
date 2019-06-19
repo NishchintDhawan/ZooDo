@@ -1,8 +1,8 @@
-$(document).ready(()=> {
+$(document).ready(function() {
     // stores the first name
     var firstName = "";
 
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(function(user) {
         // if user is logged in
         if(user){
             // get user's uid
@@ -10,7 +10,7 @@ $(document).ready(()=> {
 
             var firstNameRef = firebase.database().ref().child("data").child("employee").child("userInfo").child(userID).child("firstName");
 
-            firstNameRef.once('value',(snap)=> {
+            firstNameRef.once('value',function(snap) {
                 firstName = snap.val();
                 // Add the welcome statement to html 
                 $("#personalIntro").prepend("<h1 class=\"display-2 text-white\">Hello "+firstName+"</h1>");
@@ -236,7 +236,7 @@ var skill_num_arr = [];
 var total_number_of_skills = 1;
 var number_of_sub_skills;
 var number_of_skills;
-$("#add-skill").click(()=> {
+$("#add-skill").click(function(){
     number_of_skills = ($("#all-skills").children().length) / 2;
     var sub_skill_string = "#sub-skills-"+number_of_skills;
     number_of_sub_skills = $(sub_skill_string).children().length;
@@ -318,7 +318,7 @@ $("#add-skill").click(()=> {
     }
 });
 
-var remove_skill = (num_of_skill) => {
+function remove_skill(num_of_skill) {
     // for removing skills in order
     var id_last = $("#skill-"+num_of_skill).parent().attr('id');
     $("#skill-"+num_of_skill).remove();
@@ -349,7 +349,7 @@ var remove_skill = (num_of_skill) => {
 }
 
 // For updating the headline when you click update headline button 
-$("#update-headline").click(() => {
+$("#update-headline").click(function() {
     var headline = $("#headline-input").val();
     // console.log(headline);
     if(headline == "" || (!headline.replace(/\s/g, '').length)){
@@ -361,7 +361,7 @@ $("#update-headline").click(() => {
 });
 
 // For updating the headline when you press enter after writing your headline
-$("#headline-input").keypress((event)=>{
+$("#headline-input").keypress(function(event){
     if(event.keyCode == 13){
         $("#update-headline").click();
     }
@@ -374,7 +374,7 @@ var temp_image_desc = [];
 var image_desc = [];
 var is_photo_odd = false;
 
-$("#add-photo-btn").click(() => {
+$("#add-photo-btn").click(function() {
     $("#modal-content").empty();
     $("#modal-content").append(
         "<div class=\"modal fade\" id=\"modal-default\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-default\" data-backdrop=\"static\" data-keyboard=\"false\" aria-hidden=\"true\">"+
@@ -411,7 +411,7 @@ $("#add-photo-btn").click(() => {
         "</div>"
     )
 
-    $("#files").change(()=> {
+    $("#files").change(function() {
         // Gets an object of images selected
 
         var numberOfFilesUploaded = document.querySelector('#files').files.length;
@@ -424,7 +424,7 @@ $("#add-photo-btn").click(() => {
             alert("Please upload a file!");
         }else{
             upload_successful();
-            setTimeout(()=> { 
+            setTimeout(function() { 
                 $("#modal_footer").empty();
                 img_desc_temp(); 
                 preview_image(); 
@@ -440,7 +440,7 @@ $("#add-photo-btn").click(() => {
 
 var next_click = new Boolean(false);
 var current = 0;
-var next_button = () => {
+function next_button() {
     next_click = true;
     var image_description = $("#image-description").val();
     // Do we need to make it in an important field?
@@ -465,7 +465,7 @@ var next_button = () => {
             $("#modal_body").append(
                 "<h2>Photos Added Successfully!!</h2>"
             );
-            setTimeout(() => {
+            setTimeout(function(){
                 $("#modal-default").modal('hide');
                 current = 0;
                 next_click = false;
@@ -628,7 +628,7 @@ function show_preview() {
 
 }
         
-var img_footer = () => {
+function img_footer() {
     if(temp_image_object.length == 1){
         $("#modal_footer").append(
             "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
@@ -639,19 +639,19 @@ var img_footer = () => {
             "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"prev_photo_button\" onClick=\"prev_photo_button()\">Previous</button>"+
             "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
             "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
-        );
+        )
     }
 }
 
-var upload_successful = ()=> {
+function upload_successful() {
     $("#modal_body").empty();
     $("#modal_footer").empty();
     $("#modal_body").append(
         "<h2>Media Uploaded Successfully!!</h2>"
     );
-};
+}
 
-var img_desc_temp = ()=> {
+function img_desc_temp() {
     $("#modal_body").empty();
     if(temp_image_desc[current] == null){
         $("#modal_body").append(
@@ -680,7 +680,7 @@ var img_desc_temp = ()=> {
    
 };
 
-var img_desc_foot = () => {
+function img_desc_foot() {
     if(current == 0){
         $("#modal_footer").append(
             "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
@@ -694,18 +694,18 @@ var img_desc_foot = () => {
             // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
         );
     }
-};
+}
 
 var preview_image = function(input) {
     var readerImg = new FileReader();
-    readerImg.onload = (e)=> {
+    readerImg.onload(function(e) {
         $("#new-image").attr('src',e.target.result);
-    }
+    });
     readerImg.readAsDataURL(temp_image_object[current]);
     next_click = false;
 };
 
-var prev_photo_button = ()=> {
+function prev_photo_button() {
     var image_description = $("#image-description").val();
     temp_image_desc[current] = image_description;
     current--;
@@ -721,7 +721,7 @@ var prev_photo_button = ()=> {
 /* 
     Delete photo - DC
 */
-var delete_photo = (element)=> {
+function delete_photo(element) {
     var total_rows = $("#add-photos").children().length;
     var delete_photo_row = $(element).parent().parent().parent().parent().parent();
     var delete_photo_rowID = delete_photo_row.attr('id');
@@ -789,13 +789,13 @@ var delete_photo = (element)=> {
 };
 
 
-var remove_photo_button = ()=> {
+function remove_photo_button() {
     $("#modal_body").empty();
     $("#modal_footer").empty();
     $("#modal_body").append(
         "<h2>Media Removed Successfully!!</h2>"
     );
-    setTimeout(()=> {
+    setTimeout(function() {
         temp_image_object.splice(current, 1);
         temp_image_desc.splice(current,1);
         current--;
@@ -914,7 +914,7 @@ $(document).on("change", "#videos", function() {
 /* 
     Delete video - DC
 */
-var delete_video = (video_to_delete) => {
+function delete_video(video_to_delete) {
     var delete_video_row_id = $("#video-"+video_to_delete).parent().attr('id');
     $("#video-"+video_to_delete).remove();
 
@@ -1010,10 +1010,10 @@ $("#create-profile").click(function(){
 
             var promise1 = sendAllFilesToStorage(userId, "images");
             promises.push(promise1);
-            promise1.then(URL => { imageURL = URL; });
+            promise1.then(function(URL) { imageURL = URL; });
             var promise2 = sendAllFilesToStorage(userId, "videos");
             promises.push(promise2);
-            promise2.then(URL => { videoURL = URL; })
+            promise2.then(function(URL) { videoURL = URL; })
 
             const all = Promise.all(promises);
             all.then(function() {
@@ -1036,7 +1036,7 @@ $("#create-profile").click(function(){
                 }
 
                 var promise3 = sendProfileImgToFirebase(profilePicJson);
-                promise3.then(() => {
+                promise3.then(function() {
                     var promise4 = sendJsonToFirebase(mainJson);
                     promise4.then(function(){
                         document.getElementById("createProfileLoader").style.display = "none";
@@ -1047,7 +1047,7 @@ $("#create-profile").click(function(){
                         console.log("Sorry, Not able to create profile. Please try again.")
                     });
                 });
-                promise3.catch(() => {
+                promise3.catch(function(){
                     // Do nothing
                 });
 
@@ -1062,7 +1062,7 @@ $("#create-profile").click(function(){
 
 });
 
-var headlineCorrector = () => {
+function headlineCorrector() {
     var headline = $("#headline").html();
     if(headline == "This is your Introduction Headline. Change it using below text field."){
         headline = "";
@@ -1093,8 +1093,8 @@ function sendAllFilesToStorage(uid, category){
             //call a function to send file and wait till it returns an url
             var promise = sendFileToStorage(i, uid, category, file);
             promises.push(promise);
-            promise.then(fileUrl => { URL.push(fileUrl); });
-            promise.catch(fileUrl => { URL.push(fileUrl); });
+            promise.then(function(fileUrl) { URL.push(fileUrl); });
+            promise.catch(function(fileUrl) { URL.push(fileUrl); });
 
         }
 
@@ -1118,7 +1118,7 @@ function sendFileToStorage(index, uid, category, file){
 
             //get the url of the file uploaded
             var getUrl = snapshot.ref.getDownloadURL();
-            getUrl.then((url) => {
+            getUrl.then(function(url) {
                 return resolve(url); //return url
             })
             getUrl.catch(function(error){
@@ -1151,10 +1151,10 @@ function sendJsonToFirebase(profileJson) {
                 profileInfoPromise.catch(function(error) {
                     // delete the profile picture which was sent to firebase before this 
                     var promiseRemoveProfileImg1 = removeProfileImg(userID);
-                    promiseRemoveProfileImg1.then(()=> {
+                    promiseRemoveProfileImg1.then(function(){
                         return reject();
                     });
-                    promiseRemoveProfileImg1.catch(() => {
+                    promiseRemoveProfileImg1.catch(function() {
                         return reject();
                     });
                     //delete all files from stroge and return reject
@@ -1169,10 +1169,10 @@ function sendJsonToFirebase(profileJson) {
             } else {
                 // delete the profile picture which was sent to firebase before this 
                 var promiseRemoveProfileImg2 = removeProfileImg(userID);
-                promiseRemoveProfileImg2.then(()=> {
+                promiseRemoveProfileImg2.then(function() {
                     return reject();
                 });
-                promiseRemoveProfileImg2.catch(() => {
+                promiseRemoveProfileImg2.catch(function() {
                     return reject();
                 });
                 //delete all files from stroge and return reject
@@ -1197,8 +1197,8 @@ function sendJsonToFirebase(profileJson) {
 function sendProfileImgToFirebase(profileImageData){
 
     if(!profileImageData.profileImg){ return }
-    return new Promise((resolve, reject)=> {
-        firebase.auth().onAuthStateChanged((user) =>{
+    return new Promise(function(resolve, reject) {
+        firebase.auth().onAuthStateChanged(function(user){
             // If a user is logged in 
             if(user) {
                 // Get the uid
@@ -1206,10 +1206,10 @@ function sendProfileImgToFirebase(profileImageData){
                 // send the image data to firebase
                 var profileImagePromise = firebase.database().ref().child("data").child("employee").child("userInfo").child(userID).child("profileImgData").set(profileImageData.profileImg);
 
-                profileImagePromise.then(() => {
+                profileImagePromise.then(function() {
                     return resolve();
                 })
-                profileImagePromise.catch((error) => {
+                profileImagePromise.catch(function(error) {
                     return reject();                    
                 });
 
@@ -1223,14 +1223,14 @@ function sendProfileImgToFirebase(profileImageData){
 */
 function removeProfileImg(userID){
 
-    return new Promise((resolve, reject) => {
+    return new Promise(function(resolve, reject) {
         var filePath = 'data/employee/userInfo/'+userID+'/profileImgData';
         var databaseRef = firebase.database().ref(filePath);
         var databaseRefPromise = databaseRef.remove();
-        databaseRefPromise.then(()=> {
+        databaseRefPromise.then(function() {
             return resolve();
         });
-        databaseRef.catch((error)=> {
+        databaseRef.catch(function(error) {
             return resolve();
         });
     });

@@ -37,7 +37,6 @@ $(document).ready(function() {
 });
 
 
-
 // Function to view the introduction
 function viewIntroduction(introductionJSON){
     // Add the profile picture
@@ -141,7 +140,6 @@ function viewWorkExperience(workExperienceJSON){
     }
 }
 
-
 // Function to view Skill section
 function viewSkills(skillJSON){
 
@@ -208,7 +206,6 @@ function viewSkills(skillJSON){
     }
 }
 
-
 // function to view the profile photos
 function viewPhotos(photoJSON) {
     // if there is a photoJSON or if its not empty or undefined
@@ -231,7 +228,7 @@ function viewPhotos(photoJSON) {
                 var imgDescription = image.description;
 
                 //TODO change image to iframe to improve UX
-                photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary">
+                photoHtml = `${photoHtml}<div class="card col-lg-3 border-primary" id="photo-${imgIndex}">
                                             <div class="pic-content">
                                                 <img class="card-img-top mb-3 mt-3" src="${urlSrc}">
                                                 <div class="icons">
@@ -320,10 +317,7 @@ function viewVideos(videoJSON){
                                             </video>
                                         </div>
                                         <div class="col-lg-1"></div>`;
-                // var vidSrc = $("source");
-                // vidSrc[0].src = URL.createObjectURL(videoSrc);
-                // vidSrc.parent().load();
-                // source.parent()[0].load();
+
                 if(videoIndex % 3 == 0){
                     videoHtml = `${videoHtml}</div>`;
 
@@ -347,35 +341,45 @@ function viewVideos(videoJSON){
 }
 
 // When the edit button is clicked
+// When the edit button is clicked, the function runs only once
+$("#edit-page-btn").one('click', function(){
+    // photos
+    $("#photo-header").append(`<div class="col-2 pl-0">
+                                <button class="btn btn-icon btn-2 btn-primary" type="button" id="add-photos" onclick=addPhoto() data-toggle="modal" data-target="#modal-photo">
+                                    <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
+                                </button>
+                            </div>`);
+})
+
+// When the edit button is clicked 
 function editPage(){
+
+    //TODO add more edit functions
+    editAboutMe();
+    editEducation();
+    editWorkExperience();
+    editSkill();
+
 
     //TODO add button to send changes
 
     //TODO replace the edit button with cancel button
-
-    //TODO add more edit functions
-
-    editAboutMe()
-    editEducation()
-    editWorkExperience()
+    $("#edit-btn").hide();
+    $("#cancel-edit-btn").show();
+    $("#post-edit-opt-btn").show();
 
 }
 
 function editAboutMe() {
-
+    aboutMeHTML = `<textarea rows="4" maxlength="2000" class=" form-control form-control-alternative">${$("#personal-description").html()}</textarea>`;
+    $("#aboutMeDesc").empty();
+    $("#aboutMeDesc").html(aboutMeHTML);
 }
-
-/*
-<option value=\"softwareEngineer\">Software Engineering</option>
-                    <option value=\"computerScience\">Computer Science</option>
-                    <option value=\"business\">Business</option>
-                    <option value=\"etc\">Etc</option> 
-*/
 
 function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,school)
 {
     var selectedDegree  ;
-    var selectedCourse  ; 
+    var selectedCourse  ;
 
     var DegreeEnum = {
         "Diploma": 0,
@@ -399,13 +403,8 @@ function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,s
     selectedCourse = CourseFieldEnum[courseField];
     selectedDegree = DegreeEnum[degreeType];
     }
-    
-    console.log(selectedCourse);
 
-    (selectedCourse == 0 ) ? console.log("This should be correct") : console.log("This is wrong");
-    
-
-    var addEdu =  
+    var addEdu =
      `<div id = "extra-education-${educationNumber}">
       <br>
       <div id = "education-${educationNumber}">
@@ -416,14 +415,14 @@ function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,s
             addEdu = `${addEdu}
             <div class="col-lg-6">
                 <div class="form-group">
-                    <label class="form-control-label">Specialization Field</label>                            
+                    <label class="form-control-label">Specialization Field</label>
                     <select class=\"form-control form-control-alternative extra-education-" + educationInfoNumber + "\">`
-            
+
                     addEdu= (selectedCourse == 0) ? `${addEdu}<option value="Software Engineering" selected>Software Engineering</option>`:`${addEdu}<option value="Software Engineering">Software Engineering</option>`;
                     addEdu= (selectedCourse == 1) ? `${addEdu}<option value="Computer Science" selected>Computer Science</option>`:`${addEdu}<option value="Computer Science">Computer Science</option>`;
                     addEdu = (selectedCourse == 2) ? `${addEdu}<option value="Business" selected>Business</option>`:`${addEdu}<option value="Business">Business</option>`;
                     addEdu = (selectedCourse == 3) ? `${addEdu}<option value="Etc" selected>Etc</option>`:`${addEdu}<option value="Etc">Etc</option>`;
-            
+
             addEdu = `${addEdu} </select>
                         </div>
                     </div>`
@@ -436,7 +435,7 @@ function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,s
                     </div>
                 </div>`
 
-    
+
             addEdu = `${addEdu}
                 <div class="col-lg-6">
                         <div class="form-group">
@@ -446,12 +445,12 @@ function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,s
                         addEdu= (selectedDegree == 1) ? `${addEdu}<option value="Bachelors" selected>Bachelors</option>`:`${addEdu}<option value="Bachelors">Bachelors</option>`;
                         addEdu = (selectedDegree == 2) ? `${addEdu}<option value="Masters" selected>Masters</option>`:`${addEdu}<option value="Masters">Masters</option>`;
                         addEdu = (selectedDegree == 3) ? `${addEdu}<option value="Etc" selected>Etc</option>`:`${addEdu}<option value="Etc">Etc</option>`;
-                        
+
                 addEdu = `${addEdu} </select>
                         </div>
                     </div>`
-                        
-                addEdu = `${addEdu}      
+
+                addEdu = `${addEdu}
                         <div class="col-lg-6">
                             <div class = "form-group">
                               <label class = "form-control-label">Date of Graduation</label>
@@ -459,12 +458,12 @@ function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,s
                               <input type = "date" class = "form-control form-control-alternative extra-education-${educationNumber}" placeholder="Graduation Date" value = "${dateOfGraduation}" >
                             </div>
                         </div>
-        
+
                       </div>
                     </div>
                 </div>
               </div>`;
-        
+
 
         return addEdu;
 
@@ -479,7 +478,7 @@ function editEducation() {
   var totalNumberOfEducation = Object.keys(educationJSON).length;
   // Template string which will store the html of all the education forms
   var eduHtml =  ``;
-  
+
 
   eduHtml = `${eduHtml} <div id = "education-container">`;
   // for each education qualification, add the education to the string
@@ -489,7 +488,7 @@ function editEducation() {
     var dateOfGraduation = education.dateOfGraduation;
     var degreeType = education.degreeType;
     var school = education.school;
-    
+
     $("#education-fields").empty()
 
     var educationNumber = i.replace("education", ""); //gets the education number from the database using the educationJSON.
@@ -513,9 +512,7 @@ function editEducation() {
                           </button>
                         </div>`;
 
-//  if(i != totalNumberOfEducation){
-//      eduHtml = `${eduHtml}<hr style="margin-top:2%; margin-bottom: 4%;"></hr>`;
-//  }
+
 
   // Appending the template literal string to the education section (*** .append() also works in the same way)
   $("#education-fields").html(eduHtml);
@@ -575,7 +572,7 @@ function editWorkExperience() {
         var workDescription = work.description.replace("</br>", /\n/g);
         var workExperienceNumber = i.replace("workExperience", "");
         var selectedYear = years[work.years];
-        
+
         html = `${html} <div id="extra-work-experience-${workExperienceNumber}">
                             <br>
                             <div id="work-experience-${workExperienceNumber}">
@@ -624,7 +621,6 @@ function editWorkExperience() {
 
     html = `${html}</div>`
 
-
     html = `${html}<div id="add-extra-work-experience-buttons">
                         <button class="btn btn-icon btn-2 btn-primary" type="button" onclick="addExtraWorkExperience()" >
                             <span class="btn-inner--icon"><i class="ni ni-fat-add"></i></span>
@@ -638,6 +634,58 @@ function editWorkExperience() {
     $("#work-fields").html(html);
 }
 
+function editSkill() {
+
+    //Make a DOM ready to take new template
+    $("#skills-section").empty();
+
+    var html = ``;
+
+    html = `${html} <div class="row text-center">
+                        <div class="col-lg-3"></div>
+                        <div class="col-lg-6">
+                        <div class="row">
+                            <div class="col-lg-3"></div>
+                            <div class="col-lg-6">
+                                <div class="form-group">
+                                <label class="form-control-label">Skill</label>
+                                <input type="text" id="skill-name" class="form-control form-control-alternative" placeholder="Skill">
+                                </div>
+                            </div>
+                            <div class="col-lg-3"></div>
+                        </div>
+                        <div class="row">
+                            <div class="col-lg-1"></div>
+                            <div class="col-lg-10">
+                                <div class="form-group">
+                                <label class="form-control-label">Description</label>
+                                <textarea rows="4" id="skill-description" class="form-control form-control-alternative" placeholder="Describe your skill in few words ..."></textarea>
+                                </div>
+                            </div>
+                            <div class="col-lg-1"></div>
+                            </div>
+                        <div class="row">
+                            <div class="col-lg-4"></div>
+                            <div class="col-lg-4">
+                                <button class="btn btn-primary btn-block" type="button" onClick="addSkill();">
+                                    Add
+                                </button>
+                            </div>
+                            <div class="col-lg-4"></div>
+                        </div>
+                        </div>
+                        <div class="col-lg-3"></div>
+                    </div>
+                    <br>
+                    <!-- All the skills will be dynamically placed under here. -->
+                    <div class="pl-lg-4" id="all-skills">
+
+                    </div>`;
+
+    $("#skills-section").html(html);
+
+    populateSkillSection();
+}
 
 //This function is called when "+" button is pressed.
 //This function will add extra work information form for a user
@@ -717,6 +765,371 @@ function removeExtraWorkExperience() {
         document.getElementById("remove-extra-work-experience").removeAttribute("style");
         document.getElementById("remove-extra-work-experience").setAttribute("style", "display: none;");
     }
-
-    
 }
+
+//This function will populate the skill section with exsisting skills when user clicks edit
+function populateSkillSection() {
+
+    //get skill json
+    var skillsJSON = profileJSOn.skills;
+
+    $.each(skillsJSON, function(i, skillJSON){
+
+        addSkill(skillJSON.skill, skillJSON.description);
+
+    });
+
+}
+
+
+// These variables are used to store skill details
+var skill_name_arr = [];
+var skill_desc_arr = [];
+var skill_num_arr = [];
+// For storing the total number of skills
+var total_number_of_skills = 1;
+var number_of_sub_skills;
+var number_of_skills;
+
+//This function will add skills as a card to DOM
+function addSkill(skillName = null, skillDesc = null) {
+    number_of_skills = ($("#all-skills").children().length) / 2;
+    var sub_skill_string = "#sub-skills-"+number_of_skills;
+    number_of_sub_skills = $(sub_skill_string).children().length;
+
+    var temp_number_of_skills;
+    if(number_of_skills != 0) {
+        temp_number_of_skills = number_of_skills-1;
+    } else {
+        temp_number_of_skills = number_of_skills;
+    }
+
+    var skill_name = (!skillName) ? $("#skill-name").val() : skillName;
+    var skill_desc = (!skillDesc) ? $("#skill-description").val() : skillDesc;
+
+
+    if(skill_name == "" && skill_desc == ""){
+        alert("Please fill in the required field to add a skill!");
+    }
+    else if(skill_name == "" || (!skill_name.replace(/\s/g, '').length)){
+        alert("Please fill in the Skill Name to add a skill!");
+        document.getElementById("skill-description").value = "";
+    }
+    else{
+        skill_desc = skill_desc.replace(/\n/g, '<br />');
+        skill_name_arr[skill_name_arr.length] = skill_name;
+        skill_desc_arr[skill_desc_arr.length] = skill_desc;
+        skill_num_arr[skill_num_arr.length] = total_number_of_skills;
+
+        if(((temp_number_of_skills*3)+number_of_sub_skills) % 3 != 0) {
+            var html =  `<div class="col-lg-4"  id="skill-${total_number_of_skills}">
+                            <div class="card bg-gradient-default card-stats mb-4 mb-xl-0">
+                                <div class="card-body">
+                                    <div class="row mb-4">
+                                        <div class="col-12">
+                                            <h3 class="card-title text-white" style="text-align: center; letter-spacing: 0.2em;"><b>${skill_name}</b></h3>
+                                            <hr style="border-top: 1px solid #ffffff; margin: 1em 0;"></hr>
+                                            <small class="text-white">${skill_desc}</small>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="text-align: center;">
+                                        <div class="col-12">
+                                            <button type="button" class="btn btn-sm btn-danger" id="remove-skill" onclick="remove_skill(${total_number_of_skills})">Remove</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>`;
+            $(sub_skill_string).append(html);
+        } else {
+            var sub_skill = "sub-skills-"+((number_of_skills)+1);
+
+            var html = `<div class="row" id="${sub_skill}">
+                            <div class="col-lg-4"  id="skill-${total_number_of_skills}">
+                                <div class="card bg-gradient-default card-stats mb-4 mb-xl-0">
+                                    <div class="card-body">
+                                        <div class="row mb-4">
+                                            <div class="col-12">
+                                                <h3 class="card-title text-white" style="text-align: center; letter-spacing: 0.2em;"><b>${skill_name}</b></h3>
+                                                <hr style="border-top: 1px solid #ffffff; margin: 1em 0;"></hr>
+                                                <small class="text-white">${skill_desc}</small>
+                                            </div>
+                                        </div>
+                                        <div class="row" style="text-align: center;">
+                                            <div class="col-12">
+                                                <button type="button" class="btn btn-sm btn-danger" id="remove-skill" onclick="remove_skill(${total_number_of_skills})">Remove</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <br>`;
+            $("#all-skills").append(html);
+        }
+        document.getElementById("skill-name").value = "";
+        document.getElementById("skill-description").value = "";
+        total_number_of_skills++;
+    }
+}
+
+function remove_skill (num_of_skill){
+    // for removing skills in order
+    var id_last = $("#skill-"+num_of_skill).parent().attr('id');
+    $("#skill-"+num_of_skill).remove();
+    var id_last_num = id_last.replace("sub-skills-",'');
+    var next_id_num = parseInt(id_last_num)+1;
+    var total_skills = ($("#all-skills").children().length)/2;
+    for(i = next_id_num; i <= total_skills; i++){
+        var curr = i-1;
+        var curr_id_name = "#sub-skills-"+curr;
+        var next_id_name = "#sub-skills-"+i;
+        var next_skill_id = $(next_id_name).children(":first").attr("id");
+        $('#' + next_skill_id).appendTo(curr_id_name);
+    }
+
+    if($('#sub-skills-'+total_skills).children().length == 0){
+        $('#sub-skills-'+total_skills).next('br').remove();
+        $('#sub-skills-'+total_skills).remove();
+        total_skills--;
+    }
+
+     // for appropriately removing skills from the skill, description, skill number array
+     var index_to_delete = skill_num_arr.indexOf(num_of_skill)
+    if (index_to_delete != -1){
+        skill_num_arr.splice(index_to_delete,1);
+        skill_name_arr.splice(index_to_delete,1);
+        skill_desc_arr.splice(index_to_delete,1);
+    }
+}
+
+//function to convert all br tags with new line
+function BrToNl(str){
+    return str.replace((/<br[^>]*>/gi),"\n");
+}
+
+
+function SaveProfileChanges() {
+    console.log("Save function is not yet implemented");
+}
+
+// BELOW PHOTOS SECTION IS NOT COMPLETED ---
+// A global object for storing the pictures
+var temp_image_object = [];
+var image_object = [];
+var temp_image_desc = [];
+var image_desc = [];
+var is_photo_odd = false;
+
+// $("#add-photos").click(() => {
+function addPhoto(){
+    $("#add-photo-modal-content").empty();
+    $("#add-photo-modal-content").append(
+        "<div class=\"modal fade\" id=\"modal-photo\" tabindex=\"-1\" role=\"dialog\" aria-labelledby=\"modal-photo\" data-backdrop=\"static\" data-keyboard=\"false\" aria-hidden=\"true\">"+
+        "<div class=\"modal-dialog modal- modal-dialog-centered modal-\" role=\"document\">"+
+          "<div class=\"modal-content\">"+
+            "<div class=\"modal-header\">"+
+                "<h6 class=\"modal-title\" id=\"modal-title-default\">Upload Photos</h6>"+
+                "<button type=\"button\" class=\"close\" data-dismiss=\"modal\" aria-label=\"Close\">"+
+                    "<span aria-hidden=\"true\">×</span>"+
+                "</button>"+
+            "</div>"+
+        
+            "<div class=\"modal-body\" id=\"modal_body\">"+
+              "<div class=\"row\">"+
+                "<div class=\"col-sm-4\"></div>"+
+                "<div class=\"col-sm-4\">"+
+                  "<label for=\"files\" class=\"btn btn-outline-primary\">"+
+                      "<span class=\"btn-inner--text\">Browse</span>"+
+                      " <span class=\"btn-inner--icon\"><i class=\"ni ni-cloud-upload-96\"></i></span>"+
+                  "</label>"+
+                  "<input id=\"files\" style=\"display: none\" type=\"file\" accept=\"image/\*\" multiple/>"+
+                "</div>"+
+                "<div class=\"col-sm-4\"></div>"+
+              "</div>"+
+            "</div>"+
+                
+            "<div class=\"modal-footer\" id=\"modal_footer\">"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"+
+                // "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"next-button\" onClick=\"next_button()\">Next</button>"+
+            "</div>"+
+                
+          "</div>"+
+          "</div>"+
+        "</div>"
+    )
+
+    $("#files").change(()=> {
+        // Gets an object of images selected
+
+        var numberOfFilesUploaded = document.querySelector('#files').files.length;
+
+        for(var i=0; i<numberOfFilesUploaded; i++){
+            temp_image_object[i] = document.querySelector('#files').files[i];
+
+        }
+        if($.isEmptyObject(temp_image_object)){
+            alert("Please upload a file!");
+        }else{
+            upload_successful();
+            setTimeout(()=> { 
+                $("#modal_footer").empty();
+                img_desc_temp(); 
+                preview_image(); 
+                if(temp_image_object.length == 1){
+                    img_footer();
+                }else{
+                    img_desc_foot(); 
+                }
+            },2000);
+        }
+    });
+// });
+}
+
+var next_click = new Boolean(false);
+var current = 0;
+var next_button = () => {
+    next_click = true;
+    var image_description = $("#image-description").val();
+    // Do we need to make it in an important field?
+    if(image_description == ""){
+        alert("Please fill out the description!");
+    } else{
+        image_description = image_description.replace(/\n/g, '<br />');
+        temp_image_desc[current] = image_description;
+        if(current < temp_image_object.length-1){
+            current++;
+            $("#modal_footer").empty();
+            img_desc_temp();    
+            preview_image(); 
+            if(current == temp_image_object.length-1){
+                img_footer();
+            } else {
+                img_desc_foot(); 
+            }
+        } else{
+            $("#modal_body").empty();
+            $("#modal_footer").empty();
+            $("#modal_body").append(
+                "<h2>Photos Added Successfully!!</h2>"
+            );
+            setTimeout(() => {
+                $("#modal-default").modal('hide');
+                current = 0;
+                next_click = false;
+                image_desc = image_desc.concat(temp_image_desc);
+                image_object = image_object.concat(temp_image_object);
+                // Displaying the picture
+                showPhotoPreview();
+                temp_image_object = [];
+                temp_image_desc = [];
+            },2000);
+        }
+    }
+}
+
+        
+var img_footer = () => {
+    if(temp_image_object.length == 1){
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+        );
+    } else {
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"prev_photo_button\" onClick=\"prev_photo_button()\">Previous</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Finish</button>"
+        );
+    }
+}
+
+var upload_successful = ()=> {
+    $("#modal_body").empty();
+    $("#modal_footer").empty();
+    $("#modal_body").append(
+        "<h2>Media Uploaded Successfully!!</h2>"
+    );
+};
+
+var img_desc_temp = ()=> {
+    $("#modal_body").empty();
+    if(temp_image_desc[current] == null){
+        $("#modal_body").append(
+            "<div class=\"row\">"+
+                "<div class=\"col-lg-6\">"+
+                    "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+                "</div>"+           
+                "<div class=\"col-lg-6\">"+
+                "<div class=\"mobile-margin\">" + "</div>" +      
+                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\" placeholder=\"Anything special about the Photo?\"></textarea>"+
+                "</div>"+
+            "</div>"
+        );
+    } else {
+        $("#modal_body").append(
+            "<div class=\"row\">"+
+                "<div class=\"col-lg-6\">"+
+                    "<img id=\"new-image\" src=\"http://placehold.it/250\" alt=\"your image\" />"+
+                "</div>"+
+                "<div class=\"col-lg-6\">"+
+                    "<textarea id=\"image-description\" rows=\"10\" class=\"form-control form-control-alternative\">"+ temp_image_desc[current] +"</textarea>"+
+                "</div>"+
+            "</div>"
+        );
+    }
+   
+};
+
+var img_desc_foot = () => {
+    if(current == 0){
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+        );
+    } else {
+        $("#modal_footer").append(
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"prev_photo_button\" onClick=\"prev_photo_button()\">Previous</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" id=\"remove-photo-btn\" onClick=\"remove_photo_button()\">Remove</button>"+
+            "<button type=\"button\" class=\"btn btn-outline-primary\" onClick=\"next_button()\" id=\"next-button-img\">Next</button>"
+            // "<button type=\"button\" class=\"btn btn-outline-primary\" data-dismiss=\"modal\">Cancel</button>"
+        );
+    }
+};
+
+var preview_image = function(input) {
+    var readerImg = new FileReader();
+    readerImg.onload = (e)=> {
+        $("#new-image").attr('src',e.target.result);
+    }
+    readerImg.readAsDataURL(temp_image_object[current]);
+    next_click = false;
+};
+
+var prev_photo_button = ()=> {
+    var image_description = $("#image-description").val();
+    temp_image_desc[current] = image_description;
+    current--;
+    if(current < temp_image_object.length-1){
+        $("#modal_footer").empty();
+        img_desc_temp();    
+        preview_image(); 
+        img_desc_foot(); 
+    }
+};
+
+var showPhotoPreview = ()=> {
+
+    // number of rows of current photos
+    var numOfCurrRowsOfPhotos = $("#photos-section").children().length - $("#photos-section").find("br").length;
+    // number of current photos
+    var numOfCurrPhotos = $("#photos-section").children().children().length/2;
+
+    var photoHtml = ``;
+
+    for(var i=0; i<temp_image_object.length; i++){
+        photoHtml = `${photoHtml} `;
+    }
+}
+// NOT COMPLETED TILL HERE 

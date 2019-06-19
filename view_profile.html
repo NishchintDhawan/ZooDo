@@ -118,7 +118,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="view_profile.html">
+            <a class="nav-link active" href="view_profile.html">
               <i class="ni ni-single-02 text-yellow"></i> My Profile
             </a>
           </li>
@@ -211,9 +211,9 @@
           <!-- Card stats -->
           <div class="row">
             <style>
-              .introduction {
+              .introduction {  
                 text-align:right;
-              }
+              } 
               @media (max-width: 768px) {
                 .introduction {
                   text-align:left !important;
@@ -221,23 +221,28 @@
               }
             </style>
             <div class="col-lg-2 introduction">
-              <img class="rounded-circle shadow" style="width: 120px; height: 120px;" id="profile-picture">
+              <img class="rounded-circle shadow" style="width: 120px; height: 120px;" id="profile-picture">  
             </div>
             <div class="col-lg-4" id="nameAndHeadlineIntro">
               <h1 style="color:white; font-size:33px" id="name"></h1>
               <h3 class="text-white text-light" id="personal-headline"></h3>
             </div>
             <div class="col-lg-4"></div>
-            <div class="col-lg-2">
-                <button class="btn btn-icon btn-md btn-outline-default edit-pg-icon" onclick="editPage()" type="button">
+            <div class="col-lg-2" id="edit-btn">
+                <button class="btn btn-icon btn-md btn-secondary" onclick="editPage()" type="button">
                     <span class="btn-inner--icon"><i class="fas fa-pen edit-icon"></i></span>
-                </button></div>
+                    <span class="btn-inner--text">Edit</span>
+                </button>
+            </div>
+            <div class="col-lg-2" id="cancel-edit-btn" style="display: none;">
+                <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#modal-notify-cancel">Cancel</button>
+            </div>
           </div>
         </div>
       </div>
     </div>
     <!-- Page content -->
-
+    
     <div class="container-fluid mt--7">
 
             <!-- // About me -->
@@ -263,7 +268,7 @@
                     </div>
                 </div>
             </div>
-
+      
             <!-- Education Information -->
             <div class="row mt-5">
                 <div class="col-xl-12 mb-5">
@@ -313,7 +318,7 @@
                             </div>
                         </div>
                         <div class="card-body" id="skills-section">
-
+                          
                         </div>
                     </div>
                 </div>
@@ -324,12 +329,17 @@
                     <div class="card shadow">
                         <!-- Photos Header -->
                         <div class="card-header bg-transparent">
-                            <div class="row align-items-center">
-                            <div class="col">
-                                <h2 class="text-uppercase mb-0">Photos</h2>
-                            </div>
+                            <div class="row align-items-center" id="photo-header">
+                              <div class="col">
+                                  <h2 class="text-uppercase mb-0">Photos</h2>
+                              </div>
                             </div>
                         </div>
+
+                        <div id="add-photo-modal-content">
+    
+                        </div>
+                        
                         <!-- Photos body -->
                         <div class="card-body mx-auto" id="photos-section">
                           <!-- Photos will be added here  -->
@@ -358,7 +368,7 @@
                         <div class="modal fade" id="viewDescModal" tabindex="-1" role="dialog" aria-labelledby="viewDescModal" aria-hidden="true">
                           <div class="modal-dialog modal-dialog-centered" style="min-width:700px ;" role="document">
                             <div class="modal-content">
-
+                              
                               <!-- The picture and description are placed below -->
                               <div class="modal-body">
                                 <div class="row">
@@ -385,17 +395,17 @@
                 </div>
             </div>
 
-
+            
             <!-- Videos -->
             <div class="row">
                 <div class="col-xl-12 mb-5">
                     <div class="card shadow">
                         <!-- Video Header -->
                         <div class="card-header bg-transparent">
-                            <div class="row align-items-center">
-                            <div class="col">
-                                <h2 class="text-uppercase mb-0">Videos</h2>
-                            </div>
+                            <div class="row align-items-center" id="video-header">
+                              <div class="col">
+                                  <h2 class="text-uppercase mb-0">Videos</h2>
+                              </div>
                             </div>
                         </div>
                         <!-- Videos body -->
@@ -406,6 +416,46 @@
                     </div>
                 </div>
             </div>
+
+            <!-- This block is for option button if user click edit button -->
+            <div class="row container-fluid" id="post-edit-opt-btn" style="display: none;">
+              <div class="col" style="text-align: right;">
+                <button class="btn btn btn-outline-secondary text-default" data-toggle="modal" data-target="#modal-notify-cancel">Cancel</button>
+                <button class="btn btn-default next-btn" onclick="SaveProfileChanges()">Save</button>
+              </div>
+            </div>
+
+            <!-- This is a modal shown when user click on cancel after start editing  -->
+            <div class="modal fade" id="modal-notify-cancel" tabindex="-1" role="dialog" aria-labelledby="modal-notification" aria-hidden="true">
+                <div class="modal-dialog modal-danger modal-dialog-centered modal-" role="document">
+                    <div class="modal-content bg-gradient-danger">
+                
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modal-title-notification">Your attention is required</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                  
+                        <div class="modal-body">
+                          
+                            <div class="py-3 text-center">
+                                <i class="ni ni-bell-55 ni-3x"></i>
+                                <h4 class="heading mt-4">You should read this!</h4>
+                                <p>You changes will not be saved.</p>
+                            </div>
+                            
+                        </div>
+                  
+                        <div class="modal-footer">
+                            <a href="view_profile.html"><button type="button" class="btn btn-white">Ok, Got it</button></a>
+                            <button type="button" class="btn btn-link text-white ml-auto" data-dismiss="modal">Close</button> 
+                        </div>
+                  
+                    </div>
+                </div>
+            </div>
+
     </div>
       <!-- Footer -->
       <footer class="footer">
@@ -435,7 +485,7 @@
       </footer>
     </div>
   </div>
-  <!-- Argon Scripts --> 
+  <!-- Argon Scripts -->
   <!-- Core -->
   <script src="./assets/vendor/jquery/dist/jquery.min.js"></script>
   <script src="./assets/vendor/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -460,7 +510,6 @@
 
   <!-- firebase initilize -->
   <script src="assets/js/firebase.js"></script>
-  
 </body>
 
 </html>
