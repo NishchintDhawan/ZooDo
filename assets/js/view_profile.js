@@ -341,7 +341,6 @@ function viewVideos(videoJSON){
 }
 
 // When the edit button is clicked
-
 // When the edit button is clicked, the function runs only once
 $("#edit-page-btn").one('click', function(){
     // photos
@@ -375,7 +374,6 @@ function editAboutMe() {
     aboutMeHTML = `<textarea rows="4" maxlength="2000" class=" form-control form-control-alternative">${$("#personal-description").html()}</textarea>`;
     $("#aboutMeDesc").empty();
     $("#aboutMeDesc").html(aboutMeHTML);
-
 }
 
 function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,school)
@@ -468,7 +466,6 @@ function addEducation(educationNumber,courseField, dateOfGraduation,degreeType,s
 
 
         return addEdu;
-
 
 }
 
@@ -644,13 +641,6 @@ function editSkill() {
 
     var html = ``;
 
-
-    //Make a DOM ready to take new template
-    $("#skills-section").empty();
-    
-    var html = ``;
-
-
     html = `${html} <div class="row text-center">
                         <div class="col-lg-3"></div>
                         <div class="col-lg-6">
@@ -783,11 +773,6 @@ function populateSkillSection() {
     //get skill json
     var skillsJSON = profileJSOn.skills;
 
-
-    $.each(skillsJSON, function(i, skillJSON){
-
-
-    
     $.each(skillsJSON, function(i, skillJSON){
 
         addSkill(skillJSON.skill, skillJSON.description);
@@ -829,11 +814,7 @@ function addSkill(skillName = null, skillDesc = null) {
     else if(skill_name == "" || (!skill_name.replace(/\s/g, '').length)){
         alert("Please fill in the Skill Name to add a skill!");
         document.getElementById("skill-description").value = "";
-
     }
-
-    } 
-
     else{
         skill_desc = skill_desc.replace(/\n/g, '<br />');
         skill_name_arr[skill_name_arr.length] = skill_name;
