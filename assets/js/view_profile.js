@@ -359,7 +359,7 @@ function editPage(){
     editEducation();
     editWorkExperience();
     editSkill();
-
+    editVideos();
 
     //TODO add button to send changes
 
@@ -1133,3 +1133,150 @@ var showPhotoPreview = ()=> {
     }
 }
 // NOT COMPLETED TILL HERE 
+
+function editVideos(){
+    
+    var videoJSON = profileJSOn.videos;
+    var totalNumberOfVideos = Object.keys(videoJSON).length;
+    $("#videos-section").empty();
+    addRemoveButton(videoJSON);
+    
+}
+
+function videoADD() {
+
+    var number_of_sub_videos = ($("#videos-section").children().length) /2;
+
+    if(number_of_sub_videos == 0){
+        number_of_sub_videos++;
+
+        var sub_video = "videos-section"+number_of_sub_videos;
+        $("#videos-section").append(
+            "<div class=\"row\" id=\""+sub_video+"\">"+
+                
+            "</div>"+
+            "<br>"
+        );
+    }
+
+    var sub_video_string = "#videos-section"+number_of_sub_videos;
+    var number_of_videos = $(sub_video_string).children().length;
+
+    if(number_of_videos == 2){
+    
+        number_of_sub_videos++;
+
+        var sub_video = "videos-section-"+number_of_sub_videos;
+        $("#videos-section").append(
+            "<div class=\"row\" id=\""+sub_video+"\">"+
+                
+            "</div>"+
+            "<br>"
+        );
+
+        sub_video_string = "#videos-section-"+number_of_sub_videos;
+
+        $(sub_video_string).append(
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\" style=\"z-index:1;\">"+
+                "<div style=\"width: auto;\">"+
+                    "<div class=\"card card-stats mb-4 mb-lg-0\">"+
+                        "<div class=\"card-body\">"+
+                            "<div class=\"row\">"+
+                                "<div class=\"col-12 text-center\" >"+
+                                    "<button type=\"button\" class=\"close\" onclick = delete_video("+total_number_of_videos+")>"+
+                                        "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
+                                    "</button><br><br>"+
+                                    "<video style=\"max-width: 100%; \" controls>"+
+                                        "<source id=\"video-preview-"+total_number_of_videos+"\">"+
+                                    "</video>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>"
+        );
+    } else {
+
+        $(sub_video_string).append(
+            "<div class=\"col-lg-6\" id=\"video-"+total_number_of_videos+"\" style=\"z-index:1;\">"+
+                "<div style=\"width: auto;\">"+
+                    "<div class=\"card card-stats mb-4 mb-lg-0\">"+
+                        "<div class=\"card-body\">"+
+                            "<div class=\"row\">"+
+                                "<div class=\"col-12 text-center\">"+
+                                    "<button type=\"button\" class=\"close\" id=\"remove-vid\" onclick = delete_video("+total_number_of_videos+")>"+
+                                        "<span aria-hidden=\"true\" style=\"font-size: 125%; color: #f5365c;\">×</span>"+
+                                    "</button><br><br>"+
+                                    "<video style=\"max-width: 100%; \" controls>"+
+                                        "<source id=\"video-preview-"+total_number_of_videos+"\">"+
+                                    "</video>"+
+                                "</div>"+
+                            "</div>"+
+                        "</div>"+
+                    "</div>"+
+                "</div>"+
+            "</div>"
+        );
+    }
+
+    var video_preview_string = "#video-preview-"+total_number_of_videos;
+
+    var source = $(video_preview_string);
+    source[0].src = URL.createObjectURL(this.files[0]);
+    source.parent()[0].load();
+    video_object[total_number_of_videos-1] = this.files[0];
+    video_index[last_video_index] = total_number_of_videos;
+    last_video_index++;
+    total_number_of_videos++;
+};
+
+
+
+
+function editVideos() {
+    
+    var videoJSON = profileJSOn.videos;
+    var totalNumberOfVideos = Object.keys(videoJSON).length;
+    $("#videos-section").empty();
+    addRemoveButton(videoJSON);
+    
+}
+
+function addRemoveButton(videoJSON){
+
+     var addRemoveHTML =``;
+     addRemoveHTML = `${addRemoveHTML} <div class="row ml-2"> `;
+     
+    $.each(videoJSON, function(videoKeyName, video){
+           var videoIndex = videoKeyName.substring(videoKeyName.length-1);
+            var videoSrc = video.url;
+        addRemoveHTML = `${addRemoveHTML}    
+                                            <div  id = "videoName-${videoIndex}" class="card col-lg-3 border-primary" style="padding:10px;">
+                                            
+                                            <video style="max-width:100%;" controls>
+                                                <source src="${videoSrc}">   
+                                            </video>
+                                            </div>
+                                            <div id = "removeVideoButton-${videoIndex}" class = "removeVideoButton">
+                                                        <button  type="button" class="close" onclick="removeVideo(${videoIndex})">
+                                                        <span aria-hidden=true style="font-size: 125%; color: #f5365c;">×</span>
+                                                        </button>
+                                                        </div>
+                                            <div class="col-lg-1"></div>`;
+
+    });
+    addRemoveHTML = `${addRemoveHTML} </div> `
+    $("#videos-section").html(addRemoveHTML);
+    // var AddButton = addVideosButton();
+}
+
+function removeVideo(videoNumber){
+    var removeVideoID = "#videoName-"+videoNumber;
+    var removeVideoButtonID = "#removeVideoButton-"+ videoNumber;
+    $(removeVideoID).remove();
+    $(removeVideoButtonID).remove();
+
+
+    //make other videos shift left. 
+}   
